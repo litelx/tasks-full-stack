@@ -1,0 +1,168 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    direction: rtl;
+    font-family:  Arial, Helvetica, sans-serif;
+}
+body > div{
+    height: 100%;
+    overflow:auto; 
+    display: inline-block.
+}
+.header {
+    background: linear-gradient(#ffe6b3, #ffb366);
+    display: flex; 
+    justify-content: space-between;
+    box-shadow: 0 5px 9px grey;
+    margin-bottom: 10px;
+}
+.header h1{
+    margin-right: 40px;
+}
+.list-item {
+    display: flex; 
+    justify-content: space-between;
+    height: 10%;
+    min-height: 78px;
+    border-bottom: 1px solid black;
+}
+.li {
+    background-color: #ffffe6;
+}
+.li:nth-of-type(2n) {
+    background-color: #f7ffdd;
+  }
+.footer > * {
+    align-self: center;
+}
+footer {
+    display: inline-block;
+    width: 100%;
+    min-height: 25px;
+}
+.footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    clear: both;
+    height: 25px;
+}
+.task-details {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 80%;
+}
+.task-controllers {
+    display: flex;
+}
+
+.add-btn, .task-controllers > * {
+    cursor: pointer;
+    display: flex;
+    margin-left: 10px;
+    align-self: center;
+}
+
+.add-btn img{
+    width: 30px;
+    height: 30px;
+}
+
+.add-btn {
+    background: linear-gradient(#eeeeee, #999999);
+    border-radius: 6px;
+    padding: 2px;
+}
+.add-btn, img {
+    width: 40px;
+    height: 40px;
+    /* background-image:  url(""); */
+    /* background-color: #ddd; */
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.task-done {
+    text-decoration: line-through;
+    opacity: 0.4;
+}
+
+.task-title {
+    padding-right: 15px;
+}
+.container {
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    padding-right: 10px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100%;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox {
+    /* position: absolute; */
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    top: -3px;
+}
+
+/* On mouse-over, add a grey background color */
+ input ~ .checkmark {
+    background-color: #ddd;
+    border: 1px solid #888;
+    border-radius: 4px;
+}
+
+/* When the checkbox is checked, add a blue background */
+ input:checked ~ .checkmark {
+    background-color: #888;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+ input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkmark:after {
+    left: 1px;
+    top: 1px;
+    width: 20px;
+    height: 20px;
+
+}
