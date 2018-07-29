@@ -17,12 +17,12 @@ define('tasks/tests/app.lint-test', [], function () {
 
   QUnit.test('components/task-component.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/task-component.js should pass ESLint\n\n13:13 - Use closure actions, unless you need bubbling (ember/closure-actions)\n20:13 - Use closure actions, unless you need bubbling (ember/closure-actions)\n23:13 - Use closure actions, unless you need bubbling (ember/closure-actions)');
+    assert.ok(false, 'components/task-component.js should pass ESLint\n\n14:13 - Use closure actions, unless you need bubbling (ember/closure-actions)\n22:13 - Use closure actions, unless you need bubbling (ember/closure-actions)\n25:13 - Use closure actions, unless you need bubbling (ember/closure-actions)');
   });
 
   QUnit.test('controllers/tasks.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/tasks.js should pass ESLint\n\n23:39 - \'task\' is defined but never used. (no-unused-vars)\n28:17 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'controllers/tasks.js should pass ESLint\n\n20:39 - \'task\' is defined but never used. (no-unused-vars)\n25:17 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('helpers/sub.js', function (assert) {

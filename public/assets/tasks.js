@@ -65,6 +65,7 @@ define('tasks/components/task-component', ['exports'], function (exports) {
     });
     exports.default = Ember.Component.extend({
         notEditing: true,
+        originTitle: '',
 
         didRender: function didRender() {
             this.set('className', this.done ? 'task-done' : '');
@@ -74,14 +75,15 @@ define('tasks/components/task-component', ['exports'], function (exports) {
             isTaskDone: function isTaskDone(id, done) {
                 this.set('className', !done ? 'task-done' : '');
                 var title = this.get('title');
-                this.sendAction('updateTask', id, title, done);
+                this.sendAction('updateTask', id, title, !done);
             },
             updateTaskTitle: function updateTaskTitle() {
+                this.set('originTitle', this.get('title'));
                 this.set('notEditing', false);
             },
             sendUpdate: function sendUpdate(id, title, done) {
                 this.set('notEditing', true);
-                this.sendAction('updateTask', id, title, !done);
+                this.sendAction('updateTask', id, title, done);
             },
             deleteTask: function deleteTask(id) {
                 this.sendAction('deleteTask', id);
@@ -113,8 +115,6 @@ define('tasks/controllers/tasks', ['exports'], function (exports) {
     });
     exports.default = Ember.Controller.extend({
         showAddNewTask: false,
-        didRender: function didRender() {},
-
 
         actions: {
             addNewTaskComponent: function addNewTaskComponent() {
@@ -131,7 +131,7 @@ define('tasks/controllers/tasks', ['exports'], function (exports) {
                 });
 
                 function transitionToTask(task) {
-                    // console.log('transitionTotask = ', task);
+                    // console.log('transitionTotask = ', task)
                 }
 
                 function failure(reason) {
@@ -480,11 +480,9 @@ define('tasks/routes/tasks', ['exports'], function (exports) {
                 });
             },
             updateTask: function updateTask(id, title, done) {
-                this.get('store').findRecord('task', id).then(function (responseRecord) {
-                    responseRecord.get('title');
+                this.get('store').findRecord('task', id, { backgroundReload: false }).then(function (responseRecord) {
                     responseRecord.set('title', title);
-                    responseRecord.get('done');
-                    responseRecord.set('done', !done);
+                    responseRecord.set('done', done);
                     responseRecord.save();
                 });
             }
@@ -519,7 +517,7 @@ define("tasks/templates/components/task-component", ["exports"], function (expor
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "BjA6kLe8", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[4,\"if\",[[20,[\"notEditing\"]]],null,{\"statements\":[[0,\"    \"],[6,\"div\"],[9,\"class\",\"list-item\"],[7],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-details\"],[7],[0,\"\\n            \"],[6,\"label\"],[9,\"class\",\"container\"],[7],[0,\"\\n                \"],[6,\"input\"],[9,\"class\",\"checkbox\"],[9,\"type\",\"checkbox\"],[9,\"name\",\"done\"],[10,\"checked\",[18,\"done\"],null],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"isTaskDone\",[20,[\"id\"]],[20,[\"done\"]]],null],null],[7],[8],[0,\"\\n                \"],[6,\"span\"],[9,\"class\",\"checkmark\"],[7],[8],[0,\"\\n                \"],[6,\"span\"],[10,\"class\",[26,[[18,\"className\"],\" task-title\"]]],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"updateTaskTitle\"],null],null],[7],[1,[18,\"id\"],false],[0,\". \"],[1,[18,\"title\"],false],[8],[0,\"\\n            \"],[8],[0,\"\\n\"],[0,\"        \"],[8],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-controllers\"],[7],[0,\"\\n            \"],[6,\"div\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"deleteTask\",[20,[\"id\"]]],null],null],[7],[1,[25,\"fa-icon\",[\"times\"],[[\"size\"],[\"3x\"]]],false],[8],[0,\"\\n        \"],[8],[0,\"\\n    \"],[8],[0,\"\\n\"]],\"parameters\":[]},{\"statements\":[[0,\"    \"],[6,\"div\"],[9,\"class\",\"list-item\"],[7],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-details\"],[7],[0,\"\\n            \"],[1,[25,\"input\",null,[[\"type\",\"value\"],[\"text\",[20,[\"title\"]]]]],false],[0,\"\\n        \"],[8],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-controllers\"],[7],[0,\"\\n            \"],[6,\"img\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"sendUpdate\",[20,[\"id\"]],[20,[\"title\"]],[20,[\"done\"]]],null],null],[9,\"src\",\"assets/upload.svg\"],[9,\"alt\",\"upload\"],[7],[8],[0,\"\\n            \"],[6,\"div\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"cancelAddTask\"],null],null],[7],[1,[25,\"fa-icon\",[\"ban\"],[[\"size\"],[\"2x\"]]],false],[8],[0,\"\\n        \"],[8],[0,\"\\n    \"],[8],[0,\"\\n\"]],\"parameters\":[]}]],\"hasEval\":false}", "meta": { "moduleName": "tasks/templates/components/task-component.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "RSyR4OLG", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[4,\"if\",[[20,[\"notEditing\"]]],null,{\"statements\":[[0,\"    \"],[6,\"div\"],[9,\"class\",\"list-item\"],[7],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-details\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n                \"],[6,\"label\"],[7],[0,\"\\n                    \"],[6,\"input\"],[9,\"class\",\"checkbox\"],[9,\"type\",\"checkbox\"],[9,\"name\",\"done\"],[10,\"checked\",[18,\"done\"],null],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"isTaskDone\",[20,[\"id\"]],[20,[\"done\"]]],null],null],[7],[8],[0,\"\\n                    \"],[6,\"span\"],[9,\"class\",\"checkmark\"],[7],[8],[0,\"\\n                \"],[8],[0,\"\\n            \"],[6,\"span\"],[10,\"class\",[26,[[18,\"className\"],\" task-title\"]]],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"updateTaskTitle\"],null],null],[7],[1,[18,\"id\"],false],[0,\". \"],[1,[18,\"title\"],false],[8],[0,\"\\n            \"],[8],[0,\"\\n        \"],[8],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-controllers\"],[7],[0,\"\\n            \"],[6,\"div\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"deleteTask\",[20,[\"id\"]]],null],null],[7],[1,[25,\"fa-icon\",[\"times\"],[[\"size\"],[\"3x\"]]],false],[8],[0,\"\\n        \"],[8],[0,\"\\n    \"],[8],[0,\"\\n\"]],\"parameters\":[]},{\"statements\":[[0,\"    \"],[6,\"div\"],[9,\"class\",\"list-item\"],[7],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-details\"],[7],[0,\"\\n            \"],[1,[25,\"input\",null,[[\"type\",\"value\"],[\"text\",[20,[\"originTitle\"]]]]],false],[0,\"\\n        \"],[8],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-controllers\"],[7],[0,\"\\n            \"],[6,\"img\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"sendUpdate\",[20,[\"id\"]],[20,[\"originTitle\"]],[20,[\"done\"]]],null],null],[9,\"src\",\"assets/upload.svg\"],[9,\"alt\",\"upload\"],[7],[8],[0,\"\\n            \"],[6,\"div\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"cancelAddTask\"],null],null],[7],[1,[25,\"fa-icon\",[\"ban\"],[[\"size\"],[\"2x\"]]],false],[8],[0,\"\\n        \"],[8],[0,\"\\n    \"],[8],[0,\"\\n\"]],\"parameters\":[]}]],\"hasEval\":false}", "meta": { "moduleName": "tasks/templates/components/task-component.hbs" } });
 });
 define("tasks/templates/tasks", ["exports"], function (exports) {
   "use strict";
@@ -527,7 +525,7 @@ define("tasks/templates/tasks", ["exports"], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "2GtPUmpb", "block": "{\"symbols\":[\"task\"],\"statements\":[[6,\"div\"],[9,\"class\",\"header\"],[7],[0,\"\\n    \"],[6,\"h1\"],[7],[0,\"משימות\"],[8],[0,\"\\n    \\n    \"],[6,\"button\"],[9,\"class\",\"add-btn\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"addNewTaskComponent\"],null],null],[7],[6,\"img\"],[9,\"src\",\"/assets/plus-circle.svg\"],[9,\"alt\",\"\"],[7],[8],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[4,\"if\",[[20,[\"showAddNewTask\"]]],null,{\"statements\":[[0,\"    \"],[6,\"div\"],[9,\"class\",\"list-item\"],[7],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-details\"],[7],[0,\"\\n            \"],[1,[25,\"input\",null,[[\"type\",\"value\"],[\"text\",[20,[\"title\"]]]]],false],[0,\"\\n        \"],[8],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-controllers\"],[7],[0,\"\\n            \"],[6,\"div\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"addNewTask\"],null],null],[7],[1,[25,\"fa-icon\",[\"plus\"],[[\"size\"],[\"2x\"]]],false],[8],[0,\"\\n            \"],[6,\"div\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"cancelAddTask\"],null],null],[7],[1,[25,\"fa-icon\",[\"ban\"],[[\"size\"],[\"2x\"]]],false],[8],[0,\"\\n        \"],[8],[0,\"\\n    \"],[8],[0,\"\\n\"]],\"parameters\":[]},null],[4,\"each\",[[20,[\"model\",\"all\"]]],null,{\"statements\":[[6,\"div\"],[9,\"class\",\"li\"],[7],[1,[25,\"task-component\",null,[[\"id\",\"title\",\"done\",\"deleteTask\",\"updateTask\"],[[19,1,[\"id\"]],[19,1,[\"title\"]],[19,1,[\"done\"]],\"deleteTask\",\"updateTask\"]]],false],[8],[0,\"\\n    \\n\"]],\"parameters\":[1]},null],[6,\"footer\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"footer\"],[7],[0,\"\\n        \"],[6,\"span\"],[7],[0,\"לסיום: \"],[1,[25,\"sub\",[[20,[\"model\",\"all\",\"length\"]],[20,[\"model\",\"done\",\"length\"]]],null],false],[8],[0,\"\\n        \"],[6,\"span\"],[7],[0,\"הושלמו: \"],[1,[20,[\"model\",\"done\",\"length\"]],false],[8],[0,\"\\n        \"],[6,\"span\"],[7],[0,\"סה\\\"כ: \"],[1,[20,[\"model\",\"all\",\"length\"]],false],[8],[0,\"\\n    \"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[1,[18,\"outlet\"],false]],\"hasEval\":false}", "meta": { "moduleName": "tasks/templates/tasks.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "g4hk0QzG", "block": "{\"symbols\":[\"task\"],\"statements\":[[6,\"div\"],[9,\"class\",\"header\"],[7],[0,\"\\n    \"],[6,\"h1\"],[7],[0,\"משימות\"],[8],[0,\"\\n    \\n    \"],[6,\"button\"],[9,\"class\",\"add-btn\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"addNewTaskComponent\"],null],null],[7],[6,\"img\"],[9,\"src\",\"/assets/plus-circle.svg\"],[9,\"alt\",\"\"],[7],[8],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[4,\"if\",[[20,[\"showAddNewTask\"]]],null,{\"statements\":[[0,\"    \"],[6,\"div\"],[9,\"class\",\"list-item\"],[7],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-details\"],[7],[0,\"\\n            \"],[1,[25,\"input\",null,[[\"type\",\"value\"],[\"text\",[20,[\"title\"]]]]],false],[0,\"\\n        \"],[8],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"task-controllers\"],[7],[0,\"\\n            \"],[6,\"div\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"addNewTask\"],null],null],[7],[1,[25,\"fa-icon\",[\"plus\"],[[\"size\"],[\"2x\"]]],false],[8],[0,\"\\n            \"],[6,\"div\"],[10,\"onclick\",[25,\"action\",[[19,0,[]],\"cancelAddTask\"],null],null],[7],[1,[25,\"fa-icon\",[\"ban\"],[[\"size\"],[\"2x\"]]],false],[8],[0,\"\\n        \"],[8],[0,\"\\n    \"],[8],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\"],[4,\"each\",[[20,[\"model\",\"all\"]]],null,{\"statements\":[[0,\"    \"],[6,\"div\"],[9,\"class\",\"li\"],[7],[1,[25,\"task-component\",null,[[\"id\",\"title\",\"done\",\"deleteTask\",\"updateTask\"],[[19,1,[\"id\"]],[19,1,[\"title\"]],[19,1,[\"done\"]],\"deleteTask\",\"updateTask\"]]],false],[8],[0,\"\\n\"]],\"parameters\":[1]},null],[0,\"\\n\"],[6,\"footer\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"footer\"],[7],[0,\"\\n        \"],[6,\"span\"],[7],[0,\"לסיום: \"],[1,[25,\"sub\",[[20,[\"model\",\"all\",\"length\"]],[20,[\"model\",\"done\",\"length\"]]],null],false],[8],[0,\"\\n        \"],[6,\"span\"],[7],[0,\"הושלמו: \"],[1,[20,[\"model\",\"done\",\"length\"]],false],[8],[0,\"\\n        \"],[6,\"span\"],[7],[0,\"סה\\\"כ: \"],[1,[20,[\"model\",\"all\",\"length\"]],false],[8],[0,\"\\n    \"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[1,[18,\"outlet\"],false]],\"hasEval\":false}", "meta": { "moduleName": "tasks/templates/tasks.hbs" } });
 });
 
 
@@ -551,6 +549,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("tasks/app")["default"].create({"name":"tasks","version":"0.0.0+b3437fdb"});
+  require("tasks/app")["default"].create({"name":"tasks","version":"0.0.0+86d77bae"});
 }
 //# sourceMappingURL=tasks.map
